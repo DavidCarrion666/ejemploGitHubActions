@@ -8,4 +8,4 @@ jobs:
         #Pasos:
         steps:
           -name: Mostrar texto
-              run: echo "Hola Mundo"
+           run: echo "Hola Mundo"
