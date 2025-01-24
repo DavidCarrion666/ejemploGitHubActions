@@ -18,17 +18,29 @@ jobs:
     steps:
       - name: Mostrar texto
         run: echo "Construir"
+
       - name: Instalar PHP y Composer en Windows
         run: |
-          choco install php --version=8.1
-          choco install composer
+          choco install php --version=8.1 -y
+          choco install composer -y
           php -v
           composer --version
-      - name: Instalar MySql
+
+      - name: Instalar MySQL Server
         run: |
-          choco install mysql --version=8.0.27 -y
-          Start-Service mysql
-          mysql -u root -e "ALTER USER 'root'@'localhost'IDENTIFIED WITH mysql_native_password BY 'root';" mysql -u root -proot -e "CREATE DATABASE lumen_db;"
+          choco install mysql57 -y --ignore-checksums
+          echo "MySQL instalado correctamente"
+
+      - name: Iniciar MySQL y configurar root
+        run: |
+          net start mysql
+          echo "Esperando que MySQL inicie..."
+          timeout /t 10
+          mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root'; FLUSH PRIVILEGES;"
+
+      - name: Crear base de datos
+        run: |
+          mysql -u root -proot -e "CREATE DATABASE lumen_db; SHOW DATABASES;"
 
   test:
     runs-on: windows-latest
