@@ -8,7 +8,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Mostrar texto
-        run: echo "Hola Mundo"
+        run: echo "Paso para colnar repositorio a github actions"
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
 
   build:
     runs-on: windows-latest
